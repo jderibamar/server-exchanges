@@ -1,3 +1,5 @@
+const mercatox = require('./tickers_exchanges').mercTickers()
+
 const express = require('express')
 const axios = require('axios')
 const app = express()
@@ -5,7 +7,8 @@ const path = require('path')
 const nomeApp = process.env.npm_package_name
 const port = process.env.PORT || 3000
 
-let tickersDataCache = null
+let tickersXeggex = null,
+    tickersMercatox = null
 
 
 // ESTRATÉGIA PARA NÃO DEIXAR O SERVIDOR CAIR
@@ -34,11 +37,8 @@ app.get('/api/tickers', async (req, res) =>
 {
     try 
     {
-        // const response = await axios.get('https://api.xeggex.com/api/v2/tickers')
-        // const tickersData = response.data
-        // res.json(tickersData)
         // Verifica se os dados já estão em cache
-        if (!tickersDataCache) 
+        if (!tickersXeggex) 
         {
             // Se não estiver em cache, retorna uma resposta indicando que os dados estão sendo atualizados
             res.status(202).json({ message: 'Atualizando dados em cache. Tente novamente em breve.' });
@@ -46,7 +46,30 @@ app.get('/api/tickers', async (req, res) =>
         else 
         {
             // Se estiverem em cache, retorna os dados
-            res.json(tickersDataCache);
+            res.json(tickersXeggex);
+        }
+    }
+    catch (error) 
+    {
+        console.error('Erro ao buscar dados da API:', error)
+        res.status(500).json({ error: 'Erro ao buscar dados da API' })
+    }
+})
+
+app.get('/mercatox', async (req, res) => 
+{
+    try 
+    {
+        // Verifica se os dados já estão em cache
+        if (!tickersMercatox) 
+        {
+            // Se não estiver em cache, retorna uma resposta indicando que os dados estão sendo atualizados
+            res.status(202).json({ message: 'Atualizando dados em cache. Tente novamente em breve.' })
+        }
+        else 
+        {
+            // Se estiverem em cache, retorna os dados
+            res.json(tickersMercatox)
         }
     }
     catch (error) 
@@ -73,8 +96,9 @@ async function fetchAndCacheTickersData()
     try 
     {
       const response = await axios.get('https://api.xeggex.com/api/v2/tickers');
-      tickersDataCache = response.data;
-      return tickersDataCache;
+      tickersXeggex = response.data
+
+      return tickersXeggex;
     } 
     catch (error) 
     {
@@ -90,7 +114,7 @@ function updateCachePeriodically()
     {
       await fetchAndCacheTickersData()
       console.log('Dados em cache atualizados.');
-    }, 10000);
+    }, 10000)
 }
 
 // Inicializa o cache
@@ -98,3 +122,10 @@ fetchAndCacheTickersData()
 
 // Inicializa a atualização periódica do cache
 updateCachePeriodically()
+
+mercatox.then((res) =>
+{
+    tickersMercatox = res
+    // console.log('Res da M: ' + res.ETHO_BTC.last_price)
+})
+.catch(erro => console.error(erro))
