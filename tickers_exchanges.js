@@ -27,8 +27,7 @@ async function bitMartTickers()
         const response = await axios.get('https://api-cloud.bitmart.com/spot/v1/ticker')
         tickersBitmart = response.data
 
-        return response.data
-      // return tickersBitmart
+      return tickersBitmart
     } 
     catch (error) 
     {
