@@ -69,7 +69,7 @@ function upTckBitmart()
     {
       await bitMartTickers()
       console.log('Dados Tickers da BitMart em cache atualizados.')
-    }, 5000);
+    }, 10000);
 }
 
 // Função para atualizar os dados das moedas em cache a cada 5 segundos
@@ -79,7 +79,7 @@ function upMoBitmart()
     {
       await bitMartMoedas()
       console.log('Dados das moedas da BitMart em cache atualizados.')
-    }, 5000);
+    }, 10000);
 }
 
 // Inicializa o cache
