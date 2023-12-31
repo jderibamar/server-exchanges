@@ -91,7 +91,7 @@ app.get('/bitmart_tickers', async (req, res) =>
         if (!tickersBitmart) 
         {
             // Se não estiver em cache, retorna uma resposta indicando que os dados estão sendo atualizados
-            res.status(202).json({ message: 'Atualizando dados em cache da Mercatox. Tente novamente em breve.' })
+            res.status(202).json({ message: 'Atualizando dados em cache da BitMart. Tente novamente em breve.' })
         }
         else 
         {

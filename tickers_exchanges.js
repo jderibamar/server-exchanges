@@ -24,10 +24,11 @@ async function bitMartTickers()
 {
     try 
     {
-      const response = await axios.get('https://api-cloud.bitmart.com/spot/v1/ticker')
-      tickersMercatox = response.data
+        const response = await axios.get('https://api-cloud.bitmart.com/spot/v1/ticker')
+        tickersBitmart = response.data
 
-      return moedasBitmart
+        return response.data
+      // return tickersBitmart
     } 
     catch (error) 
     {
@@ -41,9 +42,9 @@ async function bitMartMoedas()
     try 
     {
       const response = await axios.get('https://api-cloud.bitmart.com/spot/v1/currencies')
-      tickersMercatox = response.data
+      moedasBitmart = response.data
 
-      return tickersBitmart
+      return moedasBitmart
     } 
     catch (error) 
     {
