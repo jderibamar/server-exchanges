@@ -1,4 +1,6 @@
 const mercatox = require('./tickers_exchanges').mercTickers()
+const bitMartTickers = require('./tickers_exchanges').bitMartTickers()
+const bitMartMoedas = require('./tickers_exchanges').bitMartMoedas()
 
 const express = require('express')
 const axios = require('axios')
@@ -8,7 +10,9 @@ const nomeApp = process.env.npm_package_name
 const port = process.env.PORT || 3000
 
 let tickersXeggex = null,
-    tickersMercatox = null
+    tickersMercatox = null,
+    tickersBitmart = null,
+    moedasBitmart = null
 
 
 // ESTRATÉGIA PARA NÃO DEIXAR O SERVIDOR CAIR
@@ -64,7 +68,7 @@ app.get('/mercatox', async (req, res) =>
         if (!tickersMercatox) 
         {
             // Se não estiver em cache, retorna uma resposta indicando que os dados estão sendo atualizados
-            res.status(202).json({ message: 'Atualizando dados em cache. Tente novamente em breve.' })
+            res.status(202).json({ message: 'Atualizando dados em cache da Mercatox. Tente novamente em breve.' })
         }
         else 
         {
@@ -75,6 +79,52 @@ app.get('/mercatox', async (req, res) =>
     catch (error) 
     {
         console.error('Erro ao buscar dados da API:', error)
+        res.status(500).json({ error: 'Erro ao buscar dados da API' })
+    }
+})
+
+app.get('/bitmart_tickers', async (req, res) => 
+{
+    try 
+    {
+        // Verifica se os dados já estão em cache
+        if (!tickersBitmart) 
+        {
+            // Se não estiver em cache, retorna uma resposta indicando que os dados estão sendo atualizados
+            res.status(202).json({ message: 'Atualizando dados em cache da Mercatox. Tente novamente em breve.' })
+        }
+        else 
+        {
+            // Se estiverem em cache, retorna os dados
+            res.json(tickersBitmart)
+        }
+    }
+    catch (error) 
+    {
+        console.error('Erro ao buscar tickers da API da BitMart:', error)
+        res.status(500).json({ error: 'Erro ao buscar dados da API' })
+    }
+})
+
+app.get('/bitmart_moedas', async (req, res) => 
+{
+    try 
+    {
+        // Verifica se os dados já estão em cache
+        if (!moedasBitmart) 
+        {
+            // Se não estiver em cache, retorna uma resposta indicando que os dados estão sendo atualizados
+            res.status(202).json({ message: 'Atualizando dados em cache da Mercatox. Tente novamente em breve.' })
+        }
+        else 
+        {
+            // Se estiverem em cache, retorna os dados
+            res.json(moedasBitmart)
+        }
+    }
+    catch (error) 
+    {
+        console.error('Erro ao buscar moedas da API da BitMart:', error)
         res.status(500).json({ error: 'Erro ao buscar dados da API' })
     }
 })
@@ -113,7 +163,7 @@ function updateCachePeriodically()
     setInterval(async () => 
     {
       await fetchAndCacheTickersData()
-      console.log('Dados em cache atualizados.');
+      console.log('Dados em cache da Xeggex atualizados.');
     }, 10000)
 }
 
@@ -123,9 +173,24 @@ fetchAndCacheTickersData()
 // Inicializa a atualização periódica do cache
 updateCachePeriodically()
 
+// POPULAR AS VARIÁVEIS QUE SERÃO ENVIADAS NAS ROTAS
 mercatox.then((res) =>
 {
     tickersMercatox = res
+    // console.log('Res da M: ' + res.ETHO_BTC.last_price)
+})
+.catch(erro => console.error(erro))
+
+bitMartMoedas.then((res) =>
+{
+    moedasBitmart = res
+    // console.log('Res da M: ' + res.ETHO_BTC.last_price)
+})
+.catch(erro => console.error(erro))
+
+bitMartTickers.then((res) =>
+{
+    tickersBitmart = res
     // console.log('Res da M: ' + res.ETHO_BTC.last_price)
 })
 .catch(erro => console.error(erro))
