@@ -73,23 +73,21 @@ function upTckBitmart()
 }
 
 // Função para atualizar os dados das moedas em cache a cada 5 segundos
-function upMoBitmart() 
-{
-    setInterval(async () => 
-    {
-      await bitMartMoedas()
-      console.log('Dados das moedas da BitMart em cache atualizados.')
-    }, 10000);
-}
+// function upMoBitmart() 
+// {
+//     setInterval(async () => 
+//     {
+//       await bitMartMoedas()
+//       console.log('Dados das moedas da BitMart em cache atualizados.')
+//     }, 10000);
+// }
 
 // Inicializa o cache
 mercTickers()
-bitMartMoedas()
 bitMartTickers()
 
 // Inicializa a atualização periódica do cache
 upDados()
 upTckBitmart()
-upMoBitmart()
 
 module.exports = { mercTickers, bitMartMoedas, bitMartTickers }
