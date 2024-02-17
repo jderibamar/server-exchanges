@@ -73,6 +73,6 @@ function upTckMexc()
 
 // Inicializa a atualização periódica do cache
 upDados()
-upTckMexc()
+// upTckMexc()
 
 module.exports = { mercTickers, mexcTickers }

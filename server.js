@@ -156,9 +156,12 @@ mercatox.then((res) =>
 })
 .catch(erro => console.error(erro))
 
-mexcTickers.then((res) =>
+setInterval(() =>
 {
-    tickersMexc = res
-    // console.log('Tickers da Mexc: ' + res)
-})
-.catch(erro => console.error(erro))
+    mexcTickers.then((res) =>
+    {
+        tickersMexc = res
+        // console.log('Tickers da Mexc: ' + res)
+    })
+    .catch(erro => console.error(erro))
+}, 7000)
