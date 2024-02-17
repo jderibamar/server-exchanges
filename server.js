@@ -156,9 +156,9 @@ mercatox.then((res) =>
 })
 .catch(erro => console.error(erro))
 
-bitMartTickers.then((res) =>
+mexcTickers.then((res) =>
 {
-    tickersBitmart = res
-    console.log('Tickers da BitMart: ' + res)
+    tickersMexc = res
+    console.log('Tickers da Mexc: ' + res)
 })
 .catch(erro => console.error(erro))
