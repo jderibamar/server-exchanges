@@ -68,8 +68,8 @@ function upTckMexc()
 // }
 
 // Inicializa o cache
-mercTickers()
-mexcTickers()
+// mercTickers()
+// mexcTickers()
 
 // Inicializa a atualização periódica do cache
 upDados()
