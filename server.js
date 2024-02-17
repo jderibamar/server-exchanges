@@ -89,17 +89,17 @@ app.get('/mexc_tickers', async (req, res) =>
         if (!tickersMexc) 
         {
             // Se não estiver em cache, retorna uma resposta indicando que os dados estão sendo atualizados
-            res.status(202).json({ message: 'Atualizando dados tickers da BitMart. Tente novamente em breve.' })
+            res.status(202).json({ message: 'Atualizando dados tickers da Mexc. Tente novamente em breve.' })
         }
         else 
         {
             // Se estiverem em cache, retorna os dados
-            res.json(tickersBitmart)
+            res.json(tickersMexc)
         }
     }
     catch (error) 
     {
-        console.error('Erro ao buscar tickers da API da BitMart:', error)
+        console.error('Erro ao buscar tickers da API da Mexc:', error)
         res.status(500).json({ error: 'Erro ao buscar dados da API' })
     }
 })
