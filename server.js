@@ -159,6 +159,6 @@ mercatox.then((res) =>
 mexcTickers.then((res) =>
 {
     tickersMexc = res
-    console.log('Tickers da Mexc: ' + res)
+    // console.log('Tickers da Mexc: ' + res)
 })
 .catch(erro => console.error(erro))
