@@ -1,8 +1,7 @@
 const axios = require('axios')
 
 let tickersMercatox = null,
-    tickersBitmart = null,
-    moedasBitmart = null
+    tickersMexc = null
 
 async function mercTickers() 
 {
@@ -20,34 +19,20 @@ async function mercTickers()
     }
 }
 
-async function bitMartTickers() 
+async function mexcTickers() 
 {
     try 
     {
-        const response = await axios.get('https://api-cloud.bitmart.com/spot/v1/ticker')
-        tickersBitmart = response.data
+        const response = await axios.get('https://api.mexc.com/api/v3/ticker/bookTicker')
+        tickersMexc = response.data
 
-      return tickersBitmart
+        // console.log('Tickers da Mexc: ' + tickersMexc)
+
+      return tickersMexc
     } 
     catch (error) 
     {
-        console.error('Erro ao buscar moedsa da API da BitMart:', error)
-        throw error
-    }
-}
-
-async function bitMartMoedas() 
-{
-    try 
-    {
-      const response = await axios.get('https://api-cloud.bitmart.com/spot/v1/currencies')
-      moedasBitmart = response.data
-
-      return moedasBitmart
-    } 
-    catch (error) 
-    {
-        console.error('Erro ao buscar dados da API da BitMart:', error)
+        console.error('Erro ao buscar moedsa da API da Mexc:', error)
         throw error
     }
 }
@@ -63,12 +48,12 @@ function upDados()
 }
 
 // Função para atualizar os dados em cache a cada 5 segundos
-function upTckBitmart() 
+function upTckMexc() 
 {
     setInterval(async () => 
     {
-      await bitMartTickers()
-      console.log('Dados Tickers da BitMart em cache atualizados.')
+      await mexcTickers()
+      console.log('Dados Tickers da Mexc em cache atualizados.')
     }, 10000);
 }
 
@@ -84,10 +69,10 @@ function upTckBitmart()
 
 // Inicializa o cache
 mercTickers()
-bitMartTickers()
+mexcTickers()
 
 // Inicializa a atualização periódica do cache
 upDados()
-upTckBitmart()
+upTckMexc()
 
-module.exports = { mercTickers, bitMartMoedas, bitMartTickers }
+module.exports = { mercTickers, mexcTickers }
