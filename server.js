@@ -1,5 +1,4 @@
 const mercatox = require('./tickers_exchanges').mercTickers()
-const mexcTickers = require('./tickers_exchanges').mexcTickers()
 
 const express = require('express')
 const axios = require('axios')
@@ -158,6 +157,8 @@ mercatox.then((res) =>
 
 setInterval(() =>
 {
+    const mexcTickers = require('./tickers_exchanges').mexcTickers()
+    
     mexcTickers.then((res) =>
     {
         tickersMexc = res
