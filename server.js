@@ -161,7 +161,7 @@ setInterval(() =>
     mexcTickers.then((res) =>
     {
         tickersMexc = res
-        // console.log('Tickers da Mexc: ' + res)
+        console.log('Tickers da Mexc Atualizados a cada 7 segundos')
     })
     .catch(erro => console.error(erro))
 }, 7000)
