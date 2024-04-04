@@ -1,4 +1,5 @@
 const axios = require('axios')
+const books = require('./books_apis')
 
 let tickersMercatox = null,
     tickersMexc = null
@@ -8,9 +9,9 @@ async function mercTickers()
     try 
     {
       const response = await axios.get('https://mercatox.com/api/public/v1/ticker')
-      tickersMercatox = response.data
+      const tickers = response.data
 
-      return tickersMercatox
+      return tickers
     } 
     catch (error) 
     {
@@ -24,11 +25,11 @@ async function mexcTickers()
     try 
     {
         const response = await axios.get('https://api.mexc.com/api/v3/ticker/bookTicker')
-        tickersMexc = response.data
+        let tickers = response.data
 
         // console.log('Tickers da Mexc: ' + tickersMexc)
 
-      return tickersMexc
+      return tickers
     } 
     catch (error) 
     {
@@ -37,25 +38,40 @@ async function mexcTickers()
     }
 }
 
+async function XT() 
+{
+    let tickers = await books.apiXt()
+   
+    return tickers
+    // console.log('Tickers da XT: ' + tickers)
+
+    // try 
+    // {
+    //     const response = await axios.get('https://api.mexc.com/api/v3/ticker/bookTicker')
+    //     let tickers = response.data
+
+    //     // console.log('Tickers da Mexc: ' + tickersMexc)
+
+    //   return tickers
+    // } 
+    // catch (error) 
+    // {
+    //     console.error('Erro ao buscar moedsa da API da XT:', error)
+    //     throw error
+    // }
+}
+
 // Função para atualizar os dados em cache a cada 5 segundos
 function upDados() 
 {
     setInterval(async () => 
     {
       await mercTickers()
-      console.log('Dados da Mercatox em cache atualizados.')
-    }, 5000);
+      
+      console.log('Dados da Mercatox atualizados.')
+    }, 5000)
 }
 
-// Função para atualizar os dados em cache a cada 5 segundos
-function upTckMexc() 
-{
-    setInterval(async () => 
-    {
-      await mexcTickers()
-      console.log('Dados Tickers da Mexc em cache atualizados.')
-    }, 10000);
-}
 
 // Função para atualizar os dados das moedas em cache a cada 5 segundos
 // function upMoBitmart() 
@@ -75,4 +91,4 @@ function upTckMexc()
 upDados()
 // upTckMexc()
 
-module.exports = { mercTickers, mexcTickers }
+module.exports = { mercTickers, mexcTickers, XT }

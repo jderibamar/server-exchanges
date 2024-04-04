@@ -9,7 +9,8 @@ const port = process.env.PORT || 3000
 
 let tickersXeggex = null,
     tickersMercatox = null,
-    tickersMexc = null
+    tickersMexc = null,
+    tickersXT = null
 
 
 // ESTRATÉGIA PARA NÃO DEIXAR O SERVIDOR CAIR
@@ -57,6 +58,7 @@ app.get('/api/tickers', async (req, res) =>
     }
 })
 
+// ENDPOINT DA MERCATOX
 app.get('/mercatox', async (req, res) => 
 {
     try 
@@ -75,11 +77,12 @@ app.get('/mercatox', async (req, res) =>
     }
     catch (error) 
     {
-        console.error('Erro ao buscar dados da API:', error)
+        console.error('Erro ao buscar dados da API da Mercatox:', error)
         res.status(500).json({ error: 'Erro ao buscar dados da API' })
     }
 })
 
+// ENDPOINT DA MEXC
 app.get('/mexc_tickers', async (req, res) => 
 {
     try 
@@ -99,7 +102,31 @@ app.get('/mexc_tickers', async (req, res) =>
     catch (error) 
     {
         console.error('Erro ao buscar tickers da API da Mexc:', error)
-        res.status(500).json({ error: 'Erro ao buscar dados da API' })
+        res.status(500).json({ error: 'Erro ao buscar dados da API da MEXC' })
+    }
+})
+
+// ENDPOINT DA MERCATOX
+app.get('/xt', async (req, res) => 
+{
+    try 
+    {
+        // Verifica se os dados já estão em cache
+        if (!tickersXT) 
+        {
+            // Se não estiver em cache, retorna uma resposta indicando que os dados estão sendo atualizados
+            res.status(202).json({ message: 'Atualizando dados em cache da XT. Tente novamente em breve.' })
+        }
+        else 
+        {
+            // Se estiverem em cache, retorna os dados
+            res.json(tickersXT)
+        }
+    }
+    catch (error) 
+    {
+        console.error('Erro ao buscar dados da API da XT:', error)
+        res.status(500).json({ error: 'Erro ao buscar dados da API da XT' })
     }
 })
 
@@ -158,6 +185,7 @@ mercatox.then((res) =>
 setInterval(() =>
 {
     const mexcTickers = require('./tickers_exchanges').mexcTickers()
+    const XtTickers = require('./tickers_exchanges').XT()
     
     mexcTickers.then((res) =>
     {
@@ -165,4 +193,11 @@ setInterval(() =>
         console.log('Tickers da Mexc Atualizados a cada 7 segundos')
     })
     .catch(erro => console.error(erro))
+
+    XtTickers.then((res) =>
+    {
+        tickersXT = res
+        console.log('Tickers da XT Atualizados a cada 7 segundos')
+        // console.log('Tickers da XT POS zero: ' + res[0].s)
+    })
 }, 7000)
