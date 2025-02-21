@@ -106,7 +106,7 @@ app.get('/mexc_tickers', async (req, res) =>
     }
 })
 
-// ENDPOINT DA MERCATOX
+// ENDPOINT DA XT
 app.get('/xt', async (req, res) => 
 {
     try 
