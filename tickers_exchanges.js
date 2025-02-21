@@ -44,4 +44,4 @@ async function XT()
 // Inicializa a atualização periódica do cache
 // upTckMexc()
 
-module.exports = { mercTickers, mexcTickers, XT }
+module.exports = { mexcTickers, XT }
