@@ -18,10 +18,8 @@ process.on('uncaughtException', (error) =>
 
 process.on('unhandledRejection', (reason, promise) => 
 {
-    console.error('Rejeição não tratada em promessa:', reason, promise);
-});
-
-
+    console.error('Rejeição não tratada em promessa:', reason, promise)
+})
 
 // Middleware para habilitar o CORS
 app.use((req, res, next) => 
