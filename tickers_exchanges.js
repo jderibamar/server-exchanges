@@ -23,7 +23,7 @@ async function XT()
 {
     let tickers = await books.apiXt()
 
-    console.log('Tickers da XT: ' + tickers)
+    // console.log('Tickers da XT: ' + tickers)
     return tickers
 }
 
@@ -38,7 +38,6 @@ async function XT()
 // }
 
 // Inicializa o cache
-// mercTickers()
 // mexcTickers()
 
 // Inicializa a atualização periódica do cache
